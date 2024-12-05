@@ -167,7 +167,7 @@ export default function Register() {
                 type="submit"
                 className="w-full bg-[#135ced] hover:bg-[#67a5f0] text-white-300 font-semibold py-3 px-4 rounded-md transition-all duration-300"
               >
-                Register
+                Créer
               </button>
             </form>
           </div>

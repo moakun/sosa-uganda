@@ -43,7 +43,7 @@ export async function POST(req: Request) {
 
     const hashedPassword = await hash(password, 10);
 
-    const newUser = await db.user.create({
+    await db.user.create({
       data: {
         fullName,
         email,
@@ -51,11 +51,12 @@ export async function POST(req: Request) {
         password: hashedPassword,
       },
     });
-
+    
     return NextResponse.json(
       { message: "User created successfully" },
       { status: 201 }
     );
+    
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(

@@ -67,7 +67,7 @@ export async function PATCH(request) {
     }
 
     // Query the database and update the user's video status based on the provided email
-    const updatedUser = await db.user.update({
+    await db.user.update({
       where: { email }, // Use email to find and update the user
       data: {
         video1: video1 !== undefined ? video1 : undefined, // Update video1 if provided
