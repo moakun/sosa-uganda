@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int      @id @default(autoincrement()) @unique
+  fullName        String   @db.VarChar(100) 
+  email           String   @db.VarChar(100) @unique
+  companyName     String   @db.VarChar(255) @unique
+  password        String   @db.VarChar(255)
+  video1          Boolean  @default(false)
+  video2          Boolean  @default(false)
+  score           Float?   // Assuming score is optional
+  gotAttestation  Boolean  @default(false)
+  date            DateTime @default(now()) // Default current timestamp
+  
+  // Fields from Info
+  dispositif      String?  @db.VarChar(255)
+  engagement      String?  @db.VarChar(255)
+  identification  String?  @db.VarChar(255)
+  formation       String?  @db.VarChar(255)
+  procedure       String?  @db.VarChar(255)
+  dispositifAlert String?  @db.VarChar(255)
+  certifierISO    String?  @db.VarChar(255)
+  mepSystem       String?  @db.VarChar(255)
+  intention       String?  @db.VarChar(255)
+}
