@@ -156,7 +156,7 @@ const Quiz: React.FC = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
     <Card className="w-full max-w-7xl bg-white-500 shadow-lg">
       <CardHeader>
-        <CardTitle>Quiz sur l'éthique et l'anticorruption</CardTitle>
+        <CardTitle>Quiz sur l&apos;éthique et l&apos;anticorruption</CardTitle>
       </CardHeader>
       <CardContent>
         {showScore ? (

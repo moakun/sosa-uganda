@@ -25,7 +25,6 @@ export default function PostQuiz() {
   });
 
   const [loading, setLoading] = useState(false); // To handle loading state
-  const [success, setSuccess] = useState(false); // To handle submission success
   const { data: session } = useSession();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,7 +91,7 @@ export default function PostQuiz() {
             Questionnaire
           </CardTitle>
           <CardDescription className="text-center text-gray-500 text-sm">
-            Répondez par "Oui", "Non" ou une date.
+            Répondez par &quot;Oui&quot;, &quot;Non&quot; ou une date.
           </CardDescription>
         </CardHeader>
         <CardContent className="p-6">
@@ -122,7 +121,6 @@ export default function PostQuiz() {
             >
               {loading ? 'En cours...' : 'Soumettre'}
             </Button>
-            {success && <p className="text-green-500 mt-4">Les données ont été soumises avec succès.</p>}
           </form>
         </CardContent>
       </Card>

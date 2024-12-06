@@ -61,7 +61,7 @@ export default function Register() {
       } else {
         setServerError(result.error || "An unexpected error occurred");
       }
-    } catch (err) {
+    } catch (error) {
       setServerError("Failed to connect to the server. Please try again.");
     }
   };

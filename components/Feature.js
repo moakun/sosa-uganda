@@ -41,7 +41,7 @@ const Feature = () => {
             Point Important Dans Notre Formation:
           </h3>
           <p className="my-2 text-black-500">
-            En ce qui concerne notre formation vous allez explorer plusieurs facettes de l'Anti-Corruption!
+            En ce qui concerne notre formation vous allez explorer plusieurs facettes de l&apos;Anti-Corruption!
           </p>
           <ul className="text-black-500 self-start list-inside ml-8">
             {features.map((feature, index) => (

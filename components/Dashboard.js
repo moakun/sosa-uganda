@@ -228,7 +228,7 @@ export default function Dashboard() {
 
         {/* Section d'accès au contenu */}
         <div className="bg-white-500 shadow-lg rounded-2xl p-8 mb-8">
-          <h2 className="text-2xl font-semibold text-black-600 mb-6">Accédez à vos Matériaux d'Apprentissage</h2>
+          <h2 className="text-2xl font-semibold text-black-600 mb-6">Accédez à vos Matériaux d&apos;Apprentissage</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex items-center p-6 bg-blue-200 rounded-lg">
               <Video className="h-10 w-10 text-blue-500 mr-4" />
@@ -263,7 +263,7 @@ export default function Dashboard() {
         {isDownloadButtonVisible && (
           <Link href='/attestation'>
           <Button className="w-full mt-8 text-white-500 bg-blue-500 hover:bg-blue-700">
-            Télécharger l'Attestation
+            Télécharger l&apos;Attestation
           </Button>
           </Link>
         )}
