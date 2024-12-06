@@ -188,8 +188,11 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-white-300 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-white-500 mb-2">Progression du Cours "{session?.user?.fullName.toUpperCase()}"</h1>
-        <p className="text-black-500 mb-4">Suivez votre parcours d'apprentissage</p>
+        <h1 className="text-4xl font-bold text-white-500 mb-2">
+          Progression du Cours &quot;{session?.user?.fullName.toUpperCase()}&quot;
+        </h1>
+          <p className="text-black-500 mb-4">Suivez votre parcours d&apos;apprentissage</p>
+
 
         <ProgressBar progress={overallProgress} />
 
@@ -232,7 +235,7 @@ export default function Dashboard() {
               <div>
                 <p className="text-sm font-medium text-black-600 mb-1">Accédez aux Vidéos</p>
                 <Link href="/video" className="text-blue-500 font-bold text-xl">
-                  Visionner les vidéos
+                  Visionner les vid&eacute;os
                 </Link>
               </div>
             </div>
@@ -241,7 +244,7 @@ export default function Dashboard() {
               <div>
                 <p className="text-sm font-medium text-black-600 mb-1">Complétez le Questionnaire</p>
                 <Link href="/questionnaire" className="text-blue-500 font-bold text-xl">
-                  Compléter le questionnaire
+                  Compl&eacute;ter le questionnaire
                 </Link>
               </div>
             </div>
