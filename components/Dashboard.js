@@ -28,15 +28,14 @@ export default function Dashboard() {
     // Fetch attestation status
     const fetchAttestationStatus = async () => {
       try {
-        const response = await fetch('/api/certinfo', {
-          method: 'POST',
-          body: JSON.stringify({ email: session.user.email }),
+        const response = await fetch(`/api/certinfo?email=${session.user.email}`, {
+          method: 'GET',
         });
-
+  
         if (!response.ok) {
           throw new Error('Failed to fetch attestation status');
         }
-
+  
         const data = await response.json();
         if (data.gotAttestation !== undefined) {
           setGotAttestation(data.gotAttestation);
@@ -45,6 +44,7 @@ export default function Dashboard() {
         console.error('Error fetching attestation status:', error);
       }
     };
+  
 
     // Fetch video data
     const fetchVideoData = async () => {
