@@ -33,7 +33,7 @@ export default function Dashboard() {
         });
   
         if (!response.ok) {
-          throw new Error('Failed to fetch attestation status');
+          throw new Error('echec du fetch du status de l attestation:');
         }
   
         const data = await response.json();
@@ -41,7 +41,7 @@ export default function Dashboard() {
           setGotAttestation(data.gotAttestation);
         }
       } catch (error) {
-        console.error('Error fetching attestation status:', error);
+        console.error('echec du fetch du status de l attestation:', error);
       }
     };
   
@@ -51,7 +51,7 @@ export default function Dashboard() {
       try {
         const response = await fetch(`/api/video?email=${session.user.email}`);
         if (!response.ok) {
-          throw new Error('Failed to fetch video data');
+          throw new Error('echec du fetch de la data des video');
         }
 
         const data = await response.json();
@@ -65,10 +65,10 @@ export default function Dashboard() {
             videosCompleted,
           }));
         } else {
-          console.error('Error fetching video data:', data.error);
+          console.error('echec du fetch de la data des videos:', data.error);
         }
       } catch (error) {
-        console.error('Error fetching video status:', error);
+        console.error('Echec du fetch du status des videos:', error);
       }
     };
 
@@ -77,7 +77,7 @@ export default function Dashboard() {
       try {
         const response = await fetch(`/api/questionnaire?email=${session.user.email}`);
         if (!response.ok) {
-          throw new Error('Failed to fetch questionnaire data');
+          throw new Error('echec du fetch  de la data du questionnaire');
         }
 
         const data = await response.json();
@@ -91,10 +91,10 @@ export default function Dashboard() {
             questionnaireCompleted: questionnaireCompleted ? 1 : 0,
           }));
         } else {
-          console.error('Error fetching questionnaire data:', data.error);
+          console.error('echec du fetch  de la data du questionnaire:', data.error);
         }
       } catch (error) {
-        console.error('Error fetching questionnaire status:', error);
+        console.error('echec du fetch du status du questionnaire:', error);
       }
     };
 
@@ -103,7 +103,7 @@ export default function Dashboard() {
       try {
         const response = await fetch(`/api/score?email=${session.user.email}`);
         if (!response.ok) {
-          throw new Error('Failed to fetch quiz data');
+          throw new Error('Echec du fetch pour la data du quiz');
         }
 
         const data = await response.json();
@@ -121,10 +121,10 @@ export default function Dashboard() {
             }));
           }
         } else {
-          console.log('Error fetching quiz data:', data.error);
+          console.log('Erreur en cherchant la data du quiz:', data.error);
         }
       } catch (error) {
-        console.log('Error fetching quiz data:', error);
+        console.log('Erreur en cherchant la data du quiz:', error);
       }
     };
 
