@@ -191,7 +191,7 @@ export default function Dashboard() {
         <h1 className="text-4xl font-bold text-white-500 mb-2">
           Progression du Cours &quot;{session?.user?.fullName.toUpperCase()}&quot;
         </h1>
-          <p className="text-black-500 mb-4">Suivez votre parcours d&apos;apprentissage</p>
+          <p className="text-black-500 mb-4">Suivez votre parcours d&apos;apprentissage!</p>
 
 
         <ProgressBar progress={overallProgress} />
