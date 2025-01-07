@@ -9,12 +9,12 @@ export default function VideoPage() {
     {
       id: 1,
       title: "Premiere Partie",
-      url: "https://d21ulo4r1z07kx.cloudfront.net/Partie%201.mp4",
+      url: "https://d21ulo4r1z07kx.cloudfront.net/NewPartOne.mp4",
     },
     {
       id: 2,
       title: "Deuxieme Partie",
-      url: "https://d21ulo4r1z07kx.cloudfront.net/lastPartOne_1.mp4",
+      url: "https://d21ulo4r1z07kx.cloudfront.net/NewPartOne.mp4",
     },
   ];
 
