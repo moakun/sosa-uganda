@@ -44,7 +44,7 @@ const Hero = ({
               Formation <strong>Anti Corruption</strong> & <strong>Éthique des Affaires</strong>
               </h1>
               <p className="text-black-500 mt-4 mb-6">
-              Sogéa Satom Bénin
+              Sogéa Satom
               </p>
               <Link href="/dashboard">
               <ButtonPrimary>Commencer!</ButtonPrimary>
