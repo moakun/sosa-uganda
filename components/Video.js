@@ -9,7 +9,7 @@ export default function VideoPage() {
     {
       id: 1,
       title: "Premiere Partie",
-      url: "https://d21ulo4r1z07kx.cloudfront.net/NewPartOne.mp4",
+      url: "https://d21ulo4r1z07kx.cloudfront.net/FinalPartOne.mp4",
     },
     {
       id: 2,

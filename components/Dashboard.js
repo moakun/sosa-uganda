@@ -189,7 +189,7 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-white-300 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl font-bold text-white-500 mb-2">
-          Progression du Cours &quot;{session?.user?.fullName.toUpperCase()}&quot;
+          Progression De La Formation &quot;{session?.user?.fullName.toUpperCase()}&quot;
         </h1>
           <p className="text-black-500 mb-4">Suivez votre parcours d&apos;apprentissage!</p>
 
@@ -197,7 +197,7 @@ export default function Dashboard() {
         <ProgressBar progress={overallProgress} />
 
         <div className="bg-white-500 shadow-lg rounded-2xl p-8 mb-8">
-          <h2 className="text-2xl font-semibold text-black-600 mb-6">Statut de Complétion</h2>
+          <h2 className="text-2xl font-semibold text-black-600 mb-6">Statut de complétion</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <ProgressItem
               icon={BookOpen}
@@ -219,7 +219,7 @@ export default function Dashboard() {
             />
             <ProgressItem
               icon={Download}
-              title="Attestation du Cours"
+              title="Attestation de la formation"
               value={gotAttestation ? 'Téléchargé' : 'Pas Téléchargé'}
               completed={gotAttestation}
             />
