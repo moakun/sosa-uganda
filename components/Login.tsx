@@ -53,7 +53,7 @@ export default function Login() {
       <div className="w-full max-w-md">
         <div className="bg-white-500 rounded-2xl shadow-xl overflow-hidden">
           <div className="p-8">
-            <h2 className="text-3xl font-bold text-center mb-8 text-[#135ced]">Connectez-Vous</h2>
+            <h2 className="text-3xl font-bold text-center mb-8 text-[#135ced]">Login</h2>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <div className="space-y-2">
                 <label htmlFor="email" className="block text-sm font-medium text-black-600">
@@ -69,7 +69,7 @@ export default function Login() {
               </div>
               <div className="space-y-2">
                 <label htmlFor="password" className="block text-sm font-medium text-black-600">
-                  Mots De Passe
+                  Password
                 </label>
                 <div className="relative">
                   <input
@@ -96,15 +96,15 @@ export default function Login() {
                 type="submit"
                 className="w-full bg-[#135ced] hover:bg-[#67a5f0] text-white-300 font-semibold py-3 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
               >
-                Connexion
+                Connect!
               </button>
             </form>
           </div>
           <div className="px-8 py-4 bg-gray-50 border-t border-gray-100 text-center">
             <p className="text-sm text-gray-600">
-              Vous n&apos;avez pas de compte ?{' '}
+               Don&apos;t have an account?{' '}
               <a href="/register" className="font-medium text-[#135ced] hover:text-[#67a5f0]">
-                Créer Un Compte Ici!
+                Register Here!
               </a>
             </p>
           </div>

@@ -57,8 +57,8 @@ export default function Dashboard() {
         const data = await response.json();
         if (data.success) {
           const videosCompleted =
-            (data.videoStatus.video1Status === 'Regarde' ? 1 : 0) +
-            (data.videoStatus.video2Status === 'Regarde' ? 1 : 0);
+            (data.videoStatus.video1Status === 'Seen' ? 1 : 0) +
+            (data.videoStatus.video2Status === 'Seen' ? 1 : 0);
 
           setProgress((prev) => ({
             ...prev,
@@ -189,38 +189,38 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-white-300 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl font-bold text-white-500 mb-2">
-          Progression De La Formation &quot;{session?.user?.fullName.toUpperCase()}&quot;
+        Training Progress &quot;{session?.user?.fullName.toUpperCase()}&quot;
         </h1>
-          <p className="text-black-500 mb-4">Suivez votre parcours d&apos;apprentissage!</p>
+          <p className="text-black-500 mb-4">Follow your learning journey!</p>
 
 
         <ProgressBar progress={overallProgress} />
 
         <div className="bg-white-500 shadow-lg rounded-2xl p-8 mb-8">
-          <h2 className="text-2xl font-semibold text-black-600 mb-6">Statut de complétion</h2>
+          <h2 className="text-2xl font-semibold text-black-600 mb-6">Completion status</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <ProgressItem
               icon={BookOpen}
-              title="Vidéos Regardées"
+              title="Watched Videos"
               value={`${progress.videosCompleted}/2`}
               completed={progress.videosCompleted === 2}
             />
             <ProgressItem
               icon={BarChart2}
-              title="Performance du Quiz"
-              value={progress.quizPassed ? 'Réussi' : 'Non Passé'}
+              title="Quiz Performance"
+              value={progress.quizPassed ? 'Passed' : 'Not Passed Yet'}
               completed={progress.quizPassed}
             />
             <ProgressItem
               icon={CheckCircle}
               title="Questionnaire"
-              value={progress.questionnaireCompleted ? 'Complété' : 'En Attente'}
+              value={progress.questionnaireCompleted ? 'Finished' : 'Not Done Yet'}
               completed={progress.questionnaireCompleted}
             />
             <ProgressItem
               icon={Download}
-              title="Attestation de la formation"
-              value={gotAttestation ? 'Téléchargé' : 'Pas Téléchargé'}
+              title="Certificate of training"
+              value={gotAttestation ? 'Downloaded' : 'Not Downloaded Yet'}
               completed={gotAttestation}
             />
           </div>
@@ -228,32 +228,32 @@ export default function Dashboard() {
 
         {/* Section d'accès au contenu */}
         <div className="bg-white-500 shadow-lg rounded-2xl p-8 mb-8">
-          <h2 className="text-2xl font-semibold text-black-600 mb-6">Accédez à vos Matériaux d&apos;Apprentissage</h2>
+          <h2 className="text-2xl font-semibold text-black-600 mb-6">Access your Learning Materials</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex items-center p-6 bg-blue-200 rounded-lg">
               <Video className="h-10 w-10 text-blue-500 mr-4" />
               <div>
-                <p className="text-sm font-medium text-black-600 mb-1">Accédez aux Vidéos</p>
+                <p className="text-sm font-medium text-black-600 mb-1">Access the Videos</p>
                 <Link href="/video" className="text-blue-500 font-bold text-xl">
-                  Visionner les vid&eacute;os
+                Watch the videos
                 </Link>
               </div>
             </div>
             <div className="flex items-center p-6 bg-blue-200 rounded-lg">
               <BookOpen className="h-10 w-10 text-blue-500 mr-4" />
               <div>
-                <p className="text-sm font-medium text-black-600 mb-1">Complétez le Questionnaire</p>
+                <p className="text-sm font-medium text-black-600 mb-1">Complete the Questionnaire</p>
                 <Link href="/questionnaire" className="text-blue-500 font-bold text-xl">
-                  Compl&eacute;ter le questionnaire
+                Complete the Questionnaire
                 </Link>
               </div>
             </div>
             <div className="flex items-center p-6 bg-blue-200 rounded-lg">
               <BarChart2 className="h-10 w-10 text-blue-500 mr-4" />
               <div>
-                <p className="text-sm font-medium text-black-600 mb-1">Passez le Quiz</p>
-                <Link href="/quiz" className="text-blue-500 font-bold text-xl">
-                  Passer le quiz
+                <p className="text-sm font-medium text-black-600 mb-1">Take the Quiz</p>
+                <Link href="" className="text-blue-500 font-bold text-xl">
+                Take the Quiz
                 </Link>
               </div>
             </div>
@@ -263,7 +263,7 @@ export default function Dashboard() {
         {isDownloadButtonVisible && (
           <Link href='/attestation'>
           <Button className="w-full mt-8 text-white-500 bg-blue-500 hover:bg-blue-700">
-            Télécharger l&apos;Attestation
+           Download the Certificate
           </Button>
           </Link>
         )}

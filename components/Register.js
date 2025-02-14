@@ -72,7 +72,7 @@ export default function Register() {
         <div className="bg-white-500 rounded-2xl shadow-xl overflow-hidden">
           <div className="p-4">
             <h2 className="text-3xl font-bold text-center mb-8 text-[#135ced]">
-              Créer Un Compte
+              Create an account
             </h2>
             <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
               {serverError && (
@@ -80,7 +80,7 @@ export default function Register() {
               )}
               <div className="space-y-2">
                 <label htmlFor="full-name" className="block text-sm font-medium text-gray-700">
-                  Nom Complet
+                  Full Name
                 </label>
                 <input
                   {...form.register("fullName")}
@@ -93,7 +93,7 @@ export default function Register() {
               </div>
               <div className="space-y-2">
                 <label htmlFor="societe" className="block text-sm font-medium text-gray-700">
-                  Société
+                  Company Name
                 </label>
                 <input
                   {...form.register("companyName")}
@@ -119,7 +119,7 @@ export default function Register() {
               </div>
               <div className="space-y-2">
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                  Mots De Passe
+                  Password
                 </label>
                 <div className="relative">
                   <input
@@ -145,7 +145,7 @@ export default function Register() {
               </div>
               <div className="space-y-2">
                 <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700">
-                  Confirmez le mot de passe
+                  Confirm your password
                 </label>
                 <div className="relative">
                   <input
@@ -167,7 +167,7 @@ export default function Register() {
                 type="submit"
                 className="w-full bg-[#135ced] hover:bg-[#67a5f0] text-white-300 font-semibold py-3 px-4 rounded-md transition-all duration-300"
               >
-                Créer
+                Register
               </button>
             </form>
           </div>

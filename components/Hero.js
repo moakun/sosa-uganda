@@ -12,17 +12,17 @@ import Link from "next/link";
 const Hero = ({
   listUser = [
     {
-      name: "Utilisateurs",
+      name: "Users",
       number: "500",
       icon: "/assets/Icon/one.svg",
     },
     {
-      name: "Attestations des Utilisateurs",
+      name: "User Certificates",
       number: "276",
       icon: "/assets/Icon/two.svg",
     },
     {
-      name: "Utilisateurs souhaitent se certifier ISO.",
+      name: "Users wishing to certify themselves ISO",
       number: "77%",
       icon: "/assets/Icon/three.svg",
     },
@@ -41,13 +41,13 @@ const Hero = ({
             variants={scrollAnimation}>
             <div className=" flex flex-col justify-center items-start row-start-2 sm:row-start-1">
               <h1 className="text-3xl lg:text-4xl xl:text-5xl font-medium text-black-600 leading-normal">
-              Formation <strong>Anti Corruption</strong> & <strong>Éthique des Affaires</strong>
+              <strong>Anti-Corruption</strong> Training & <strong>Business Ethics</strong>
               </h1>
               <p className="text-black-500 mt-4 mb-6">
-              Sogéa Satom
+              Sogea Satom Uganda
               </p>
               <Link href="/dashboard">
-              <ButtonPrimary>Commencer!</ButtonPrimary>
+              <ButtonPrimary>Start!</ButtonPrimary>
               </Link>
             </div>
             <div className="flex w-full">

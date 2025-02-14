@@ -72,15 +72,15 @@ export default function PostQuiz() {
   
 
   const questions = [
-    { id: 'dispositif', label: 'Dispositifs contre la corruption ?' },
-    { id: 'engagement', label: 'Engagement formalisé de la Direction ?' },
-    { id: 'identification', label: 'Cartographie des risques ?' },
-    { id: 'formation', label: 'Formation du personnel ?' },
-    { id: 'procedure', label: 'Procédure de gestion des cadeaux ?' },
-    { id: 'dispositifAlert', label: "Dispositif d'alerte ?" },
-    { id: 'certifierISO', label: 'Certification ISO 37001 ?' },
-    { id: 'mepSystem', label: "Mise en place d'un système anticorruption ?" },
-    { id: 'intention', label: 'Intention de certification ISO 37001 ?' },
+    { id: 'dispositif', label: 'Has your company implemented measures to protect itself from acts of corruption?' },
+    { id: 'engagement', label: 'Formalized commitment of Management against corruption in all its forms (anti-corruption policy, anti-corruption charter and/or code of conduct)?' },
+    { id: 'identification', label: 'Identification of corruption risks and development of risk mapping?' },
+    { id: 'formation', label: 'Training and awareness of staff on the risks of corruption and the prevention of conflicts of interest?' },
+    { id: 'procedure', label: 'Gift management procedure?' },
+    { id: 'dispositifAlert', label: "Alert system to collect reports of concern?" },
+    { id: 'certifierISO', label: 'Is your company ISO 37001 certified?' },
+    { id: 'mepSystem', label: "Is your company in the process of implementing an anti-corruption management system with a view to future certification according to the ISO 37001 standard?" },
+    { id: 'intention', label: 'Do you intend to certify your company under the ISO 37001 anti-corruption standard?' },
   ];
 
   return (
@@ -91,7 +91,7 @@ export default function PostQuiz() {
             Questionnaire
           </CardTitle>
           <CardDescription className="text-center text-gray-500 text-sm">
-            Répondez par &quot;Oui&quot;, &quot;Non&quot; ou une date.
+          Answer with Yes, No or a date.
           </CardDescription>
         </CardHeader>
         <CardContent className="p-6">
@@ -107,7 +107,7 @@ export default function PostQuiz() {
                   value={formData[question.id as keyof typeof formData]}
                   onChange={handleChange}
                   required
-                  placeholder="Oui, Non ou JJ/MM/AA"
+                  placeholder="Yes, No or DD/MM/YY"
                   className="w-full border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700"
                 />
               </div>
@@ -119,7 +119,7 @@ export default function PostQuiz() {
                 loading ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'
               }`}
             >
-              {loading ? 'En cours...' : 'Soumettre'}
+              {loading ? 'Loading...' : 'Send'}
             </Button>
           </form>
         </CardContent>
