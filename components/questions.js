@@ -55,11 +55,11 @@ const questions = [
     ],
   },
   {
-    question: 'SOGEA SATOM Benin has prohibited cash gifts:',
+    question: 'SOGEA SATOM Uganda has prohibited cash gifts:',
     answerOptions: [{ answer: 'TRUE', isCorrect: true }, { answer: 'FALSE' }],
   },
   {
-    question: 'SOGEA SATOM Benin has made an alert system available to its staff and business partners to report any concerns related to corruption:',
+    question: 'SOGEA SATOM Uganda has made an alert system available to its staff and business partners to report any concerns related to corruption:',
     answerOptions: [{ answer: 'TRUE', isCorrect: true }, { answer: 'FALSE' }],
   },
   {

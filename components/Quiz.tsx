@@ -46,8 +46,8 @@ const Quiz: React.FC = () => {
             setScore(score);
             setShowScore(false);
             toast({
-              title: "Score Inférieur",
-              description: `Votre score est ${score}, vous devrez essayer à nouveau pour passer l'examen.`,
+              title: "Inferior Score",
+              description: `Your score is ${score}, You must have the exam again.`,
               variant: "default",
             });
           }
@@ -56,8 +56,8 @@ const Quiz: React.FC = () => {
           setScore(0);
           setShowScore(false);
           toast({
-            title: "Premier Examen",
-            description: "Vous n'avez pas encore passé l'examen. Bonne chance !",
+            title: "First Exam Attempt",
+            description: "Good luck with your exam!",
             variant: "default",
           });
         }
@@ -66,7 +66,7 @@ const Quiz: React.FC = () => {
         console.log(data.message || "Unknown error occurred");
         toast({
           title: "Message",
-          description: data.message || "Impossible de récupérer votre score précédent.",
+          description: data.message || "Can't fetch user score",
           variant: "default",
         });
       }
@@ -74,7 +74,7 @@ const Quiz: React.FC = () => {
       console.error('Error fetching user score:', error);
       toast({
         title: "Message",
-        description: "Impossible de récupérer votre score précédent.",
+        description: "Can't fetch user score",
         variant: "default",
       });
     }
@@ -132,14 +132,14 @@ const Quiz: React.FC = () => {
       const data = await response.json()
       console.log('Score saved:', data)
       toast({
-        title: "Score enregistré",
-        description: "Votre score a été sauvegardé avec succès.",
+        title: "Score Registered",
+        description: "Your score has been saved successfully.",
       })
     } catch (error) {
       console.error('Error saving score:', error)
       toast({
         title: "Erreur",
-        description: "Impossible d'enregistrer votre score. Veuillez réessayer.",
+        description: "Can't save your score",
         variant: "destructive",
       })
     }
@@ -156,7 +156,7 @@ const Quiz: React.FC = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
     <Card className="w-full max-w-7xl bg-white-500 shadow-lg">
       <CardHeader>
-        <CardTitle>Quiz sur l&apos;éthique et l&apos;anticorruption</CardTitle>
+        <CardTitle>Quiz about Ethic and Anti Corruption</CardTitle>
       </CardHeader>
       <CardContent>
         {showScore ? (
@@ -197,13 +197,13 @@ const Quiz: React.FC = () => {
             variant="outline"
             className="bg-white-500 text-black-500 hover:bg-blue-100"
           >
-            Précédent
+            Back
           </Button>
           <Button 
             onClick={handleNext}
             className="bg-blue-500 text-white-500 hover:bg-blue-600"
           >
-            {currentQuestion === questions.length - 1 ? 'Terminer' : 'Suivant'}
+            {currentQuestion === questions.length - 1 ? 'Finished' : 'Next'}
           </Button>
         </CardFooter>
       )}
