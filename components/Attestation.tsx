@@ -21,29 +21,30 @@ export default function Attestation() {
     try {
       // Generate the certificate image using html2canvas
       const canvas = await html2canvas(certificateRef.current, {
-        scale: 2, // Higher resolution
+        scale: 3, // Try increasing the scale for better resolution
         logging: false,
         useCORS: true,
         backgroundColor: "#ffffff",
         x: 0,
         y: 0,
-        scrollX: 0, // Ensure it's positioned correctly
-        scrollY: 0, // Ensure it's positioned correctly
+        scrollX: 0,
+        scrollY: 0,
       });
 
       // Convert canvas to PDF using jsPDF
       const imgData = canvas.toDataURL("image/png", 1.0);
       const pdf = new jsPDF("landscape", "mm", "a4"); // A4 size, landscape orientation
       const imgWidth = 297; // A4 width in mm
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      const scaledHeight = imgHeight > 210 ? 210 : imgHeight; // A4 height in mm (210mm)
+      const imgHeight = (canvas.height * imgWidth) / canvas.width; // Keep aspect ratio
+      const scaledHeight = imgHeight > 210 ? 210 : imgHeight; // Scale if image is too large  
 
       // Center the image in the PDF
       const xOffset = (297 - imgWidth) / 2;
       const yOffset = (210 - scaledHeight) / 2;
 
       pdf.addImage(imgData, "PNG", xOffset, yOffset, imgWidth, scaledHeight);
-      pdf.save("certificate.pdf"); // Trigger download
+      pdf.save("certificate.pdf");
+
 
       // Update attestation status in the database
       const response = await fetch("/api/certinfo", {

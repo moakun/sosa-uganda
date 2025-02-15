@@ -1,6 +1,4 @@
-import Image from 'next/image';
 import { formatDate } from '@/utils/format-date';
-import Logo from '../public/assets/sosal.png';
 
 interface CertificateProps {
   userName: string;
@@ -19,13 +17,7 @@ export function Certificate({ userName, company, date, courseName }: Certificate
       <div className="relative h-full flex flex-col items-center justify-between py-12">
         {/* Logo */}
         <div className="space-y-4">
-          <Image
-            src={Logo} // Replace with your actual logo path
-            alt="SOGEA SATOM Logo"
-            width={200}
-            height={80}
-            className="mx-auto"
-          />
+        <img src="/assets/sosal.png" alt="SOGEA SATOM Logo" className="mx-auto" />
         </div>
 
         {/* Certificate Content */}
