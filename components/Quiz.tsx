@@ -37,7 +37,7 @@ const Quiz: React.FC = () => {
         if (data.userData?.score !== null) {
           const score = data.userData.score;
   
-          if (score >= 8) {
+          if (score >= 7) {
             // If score is 8 or above, show it
             setScore(score);
             setShowScore(true);

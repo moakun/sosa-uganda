@@ -1,7 +1,6 @@
 const questions = [
   {
-    question:
-      'Le groupe VINCI a exprimé son engagement en faveur de la lutte contre la corruption dès:',
+    question: 'The VINCI group expressed its commitment to fighting corruption as early as:',
     answerOptions: [
       { answer: '2001' },
       { answer: '2003', isCorrect: true },
@@ -10,39 +9,34 @@ const questions = [
     ],
   },
   {
-    question:
-      'Les engagements éthiques du groupe VINCI sont consignés dans les documents suivants:',
+    question: 'The ethical commitments of the VINCI group are outlined in the following documents:',
     answerOptions: [
-      { answer: 'La Charte éthique et comportement.' },
-      { answer: 'Le code de conduite anticorruption.' },
-      { answer: 'Le manifeste de Vinci.' },
+      { answer: 'The Ethics and Behavior Charter.' },
+      { answer: 'The Anti-Corruption Code of Conduct.' },
+      { answer: 'The Vinci Manifesto.' },
       {
-        answer: 'Les trois réponses précedentes sont justes.',
+        answer: 'All of the above answers are correct.',
         isCorrect: true,
       },
     ],
   },
   {
-    question:
-      "Selon d'indice de perception de la corruption de TRANSPARENCYINTERNATIONAL le bénin est:",
+    question: 'According to the Corruption Perceptions Index by TRANSPARENCY INTERNATIONAL, Uganda is:',
     answerOptions: [
-      { answer: "78 ème sur 180 pays à l'échelle mondial.", isCorrect: true },
-      { answer: '1 er en Afrique.' },
+      { answer: '141th out of 180 countries globally.', isCorrect: true },
+      { answer: '1st in Africa.' },
       {
-        answer:
-          'A gagner 15 places dans le classement mondial de TRANSPARENCY INTERNATIONAL entre 2020 et 2021',
+        answer: 'Has gained 15 places in the TRANSPARENCY INTERNATIONAL global ranking between 2020 and 2021.',
       },
-      { answer: 'Les trois réponses précedentes sont bonnes.' },
+      { answer: 'All of the above answers are correct.' },
     ],
   },
   {
-    question:
-      'La Loi 2011-20 du 12 Octobre 2011 prévoit des sanctions pouvant aller à la réclusion à perpétuité :',
-    answerOptions: [{ answer: 'VRAI', isCorrect: true }, { answer: 'FAUX' }],
+    question: 'Ugandan laws provide for penalties that can include life imprisonment:',
+    answerOptions: [{ answer: 'TRUE', isCorrect: true }, { answer: 'FALSE' }],
   },
   {
-    question:
-      'La norme ISO en vigueur qui définit les exigences relatives au système de management anticorruption est la norme :',
+    question: 'The current ISO standard that defines the requirements for an anti-corruption management system is:',
     answerOptions: [
       { answer: 'ISO 9001 version 2015' },
       { answer: 'ISO 14001 version 2015' },
@@ -51,55 +45,51 @@ const questions = [
     ],
   },
   {
-    question: 'La corruption passive est :',
+    question: 'Passive corruption is:',
     answerOptions: [
-      { answer: "Le fait de promettre ou d'offrir un avantage indu." },
+      { answer: 'The act of promising or offering an undue advantage.' },
       {
-        answer: 'Le fait de solliciter ou de recevoir cet avantage.',
+        answer: 'The act of soliciting or receiving such an advantage.',
         isCorrect: true,
       },
     ],
   },
   {
-    question: 'SOGEA SATOM Bénin a interdit les cadeaux en espèce:',
-    answerOptions: [{ answer: 'VRAI', isCorrect: true }, { answer: 'FAUX' }],
+    question: 'SOGEA SATOM Benin has prohibited cash gifts:',
+    answerOptions: [{ answer: 'TRUE', isCorrect: true }, { answer: 'FALSE' }],
   },
   {
-    question:
-      "SOGEA SATOM Bénin a mis à la disposition de son personnel et de ses partenaires commerciaux un dispositif d'alertes pour signaler toutes les inquiétudes en relation avec la corruption:",
-    answerOptions: [{ answer: 'VRAI', isCorrect: true }, { answer: 'FAUX' }],
+    question: 'SOGEA SATOM Benin has made an alert system available to its staff and business partners to report any concerns related to corruption:',
+    answerOptions: [{ answer: 'TRUE', isCorrect: true }, { answer: 'FALSE' }],
   },
   {
-    question:
-      'La procédure évaluation des tiers prévoit des niveaux de diligences raisonnables qui prennent en compte:',
+    question: 'The third-party evaluation procedure includes levels of due diligence that take into account:',
     answerOptions: [
-      { answer: 'Le risque pays où réside le partenaire commercial' },
+      { answer: 'The country risk where the business partner is located.' },
       {
-        answer:
-          "La catégorie: clients publics ou privés, fournisseurs, sous-traitants, Bureaux d'étude, etc.",
+        answer: 'The category: public or private clients, suppliers, subcontractors, consulting firms, etc.',
       },
-      { answer: "Le chiffre d'affaires annuel réalisé avec SOGEA SATOM" },
-      { answer: 'Les trois réponses précedentes sont bonnes', isCorrect: true },
+      { answer: 'The annual turnover generated with SOGEA SATOM.' },
+      { answer: 'All of the above answers are correct.', isCorrect: true },
     ],
   },
   {
-    question:
-      'Selon la procédure évaluation des tiers la due diligence de niveau 3 correspond à:',
+    question: 'According to the third-party evaluation procedure, level 3 due diligence corresponds to:',
     answerOptions: [
       {
         answer:
-          'La consultation de la base de données world-check ou équivalent + Articles de presse + Politique Anti Corruption disponible sur source ouverte',
+          'Consultation of the World-Check database or equivalent + Press articles + Anti-Corruption Policy available on open sources.',
       },
       {
         answer:
-          'La consultation de la base de données world-check ou équivalent + Articles de presse + Politique Anti Corruption à fournir + Questionnaire à fournir par le prestataire',
+          'Consultation of the World-Check database or equivalent + Press articles + Anti-Corruption Policy to be provided + Questionnaire to be completed by the provider.',
         isCorrect: true,
       },
       {
         answer:
-          'La consultation de la base de données world-check ou équivalent',
+          'Consultation of the World-Check database or equivalent.',
       },
-      { answer: 'Les trois réponses sont bonnes' },
+      { answer: 'All of the above answers are correct.' },
     ],
   },
 ];

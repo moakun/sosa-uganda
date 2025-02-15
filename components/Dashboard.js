@@ -25,18 +25,19 @@ export default function Dashboard() {
       return;
     }
 
-    // Fetch attestation status
     const fetchAttestationStatus = async () => {
       try {
         const response = await fetch(`/api/certinfo?email=${session.user.email}`, {
           method: 'GET',
         });
-  
+    
         if (!response.ok) {
           throw new Error('echec du fetch du status de l attestation:');
         }
-  
+    
         const data = await response.json();
+        console.log('Attestation Data:', data); // Debugging line
+    
         if (data.gotAttestation !== undefined) {
           setGotAttestation(data.gotAttestation);
         }
@@ -46,46 +47,49 @@ export default function Dashboard() {
     };
   
 
-    // Fetch video data
     const fetchVideoData = async () => {
       try {
         const response = await fetch(`/api/video?email=${session.user.email}`);
         if (!response.ok) {
-          throw new Error('echec du fetch de la data des video');
+          throw new Error(`Failed to fetch video data. Status: ${response.status}`);
         }
-
+    
         const data = await response.json();
+        console.log('Video Data:', data); // Debugging line
+    
         if (data.success) {
           const videosCompleted =
-            (data.videoStatus.video1Status === 'Seen' ? 1 : 0) +
-            (data.videoStatus.video2Status === 'Seen' ? 1 : 0);
-
+            (data.videoStatus.video1Status === "Regarde" ? 1 : 0) +
+            (data.videoStatus.video2Status === "Regarde" ? 1 : 0); 
+    
           setProgress((prev) => ({
             ...prev,
             videosCompleted,
           }));
         } else {
-          console.error('echec du fetch de la data des videos:', data.error);
+          console.error('Error fetching video data:', data.error);
         }
       } catch (error) {
-        console.error('Echec du fetch du status des videos:', error);
+        console.error('Error fetching video status:', error.message);
       }
     };
+    
 
-    // Fetch questionnaire data
     const fetchQuestionnaireData = async () => {
       try {
         const response = await fetch(`/api/questionnaire?email=${session.user.email}`);
         if (!response.ok) {
           throw new Error('echec du fetch  de la data du questionnaire');
         }
-
+    
         const data = await response.json();
+        console.log('Questionnaire Data:', data); // Debugging line
+    
         if (data.success) {
           const questionnaireCompleted = Object.values(data.userData).every(
             (value) => value !== null
           );
-
+    
           setProgress((prev) => ({
             ...prev,
             questionnaireCompleted: questionnaireCompleted ? 1 : 0,
@@ -98,15 +102,16 @@ export default function Dashboard() {
       }
     };
 
-    // Fetch quiz score data
     const fetchQuizData = async () => {
       try {
         const response = await fetch(`/api/score?email=${session.user.email}`);
         if (!response.ok) {
           throw new Error('Echec du fetch pour la data du quiz');
         }
-
+    
         const data = await response.json();
+        console.log('Quiz Data:', data); // Debugging line
+    
         if (data.success) {
           if (data.userData.score !== null) {
             const quizPassed = data.userData.score > 8; // Assuming passing score is greater than 8
@@ -252,7 +257,7 @@ export default function Dashboard() {
               <BarChart2 className="h-10 w-10 text-blue-500 mr-4" />
               <div>
                 <p className="text-sm font-medium text-black-600 mb-1">Take the Quiz</p>
-                <Link href="" className="text-blue-500 font-bold text-xl">
+                <Link href="/quiz" className="text-blue-500 font-bold text-xl">
                 Take the Quiz
                 </Link>
               </div>
