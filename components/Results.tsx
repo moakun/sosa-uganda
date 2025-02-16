@@ -13,7 +13,7 @@ const Results: React.FC<ResultsProps> = ({ score, totalQuestions, onRestart }) =
 
   return (
     <div className="text-center">
-      <h2 className="text-3xl font-bold mb-4">Quiz terminé!</h2>
+      <h2 className="text-3xl font-bold mb-4">Quiz Finished!</h2>
       <p className="text-2xl mb-4">
         Your score is: {score} / {totalQuestions}
       </p>
