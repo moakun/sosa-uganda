@@ -17,7 +17,7 @@ export function Certificate({ userName, company, date, courseName }: Certificate
       <div className="relative h-full flex flex-col items-center justify-between py-12">
         {/* Logo */}
         <div className="space-y-4">
-        <img src="/assets/sosal.png" alt="SOGEA SATOM Logo" className="mx-auto" />
+        <img src="/assets/sosal.png" alt="SOGEA SATOM Logo" width={160} height={160} className="mx-auto" />
         </div>
 
         {/* Certificate Content */}
