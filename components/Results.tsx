@@ -30,9 +30,17 @@ const Results: React.FC<ResultsProps> = ({ score, totalQuestions, onRestart }) =
         {/* Link to Dashboard */}
         <Link 
           href="/dashboard" 
-          className="px-4 py-2 bg-gray-400 text-white-500 rounded "
+          className="px-4 py-2 bg-blue-500 text-white-500 rounded hover:bg-blue-800"
         >
           Return to Dashboard
+        </Link>
+
+        {/* Link to Questionnaire */}
+        <Link 
+          href="/questionnaire" 
+          className="px-4 py-2 bg-blue-500 text-white-500 rounded hover:bg-blue-800"
+        >
+          Go to Questionnaire
         </Link>
       </div>
     </div>
