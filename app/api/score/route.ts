@@ -46,15 +46,15 @@ export async function GET(req: Request) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 });
     }
 
-    // If score is null or <= 8, handle accordingly
+    // If score is null or <= 7, handle accordingly
     if (userData.score === null) {
       return NextResponse.json(
         { success: false, message: 'No previous exam score found. First exam attempt.' },
         { status: 200 } // Success status, but with a false success flag
       );
-    } else if (userData.score <= 8) {
+    } else if (userData.score < 7) {
       return NextResponse.json(
-        { success: false, message: 'Score is not sufficient (must be greater than 8).' },
+        { success: false, message: 'Score is not sufficient (must be greater than 7).' },
         { status: 200 } // Success status, but with a false success flag
       );
     }
