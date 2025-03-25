@@ -9,12 +9,12 @@ export default function VideoPage() {
     {
       id: 1,
       title: "First Part",
-      url: "https://d21ulo4r1z07kx.cloudfront.net/uganda demo_1.mp4",
+      url: "https://d21ulo4r1z07kx.cloudfront.net/UgandaPartOne.mp4",
     },
     {
       id: 2,
       title: "Second Part",
-      url: "",
+      url: "https://d21ulo4r1z07kx.cloudfront.net/UgandaPartTwo.mp4",
     },
   ];
 
