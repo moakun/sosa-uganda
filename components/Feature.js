@@ -10,7 +10,8 @@ const features = [
   "Commitment of the VINCI group.",
   "VINCI group ethical guidelines.",
   "Third party evaluation procedure.",
-  "Disciplinary regime and Sanctions."
+  "Disciplinary regime and Sanctions.",
+  "SOGEA SATOM UGANDA Anti-Corruption Policy and Procedures."
 ]
 
 const Feature = () => {

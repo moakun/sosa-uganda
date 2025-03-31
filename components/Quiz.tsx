@@ -176,7 +176,8 @@ const Quiz: React.FC = () => {
                   key={index}
                   onClick={() => handleAnswerOptionClick(index)}
                   variant={userAnswers[currentQuestion] === index ? "default" : "outline"}
-                  className={`w-full justify-start h-auto py-3 px-4 text-left ${
+                  className={`w-full justify-start h-auto py-3 px-4 text-left 
+                    whitespace-normal min-h-[80px] break-words ${
                     userAnswers[currentQuestion] === index
                       ? 'bg-blue-500 text-white-500 hover:bg-blue-600'
                       : 'bg-white-500 text-black-500 hover:bg-blue-100'
