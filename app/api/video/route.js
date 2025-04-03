@@ -10,9 +10,8 @@ export async function GET(request) {
     const email = searchParams.get('email'); // Extract the user email from the URL
 
     if (!email) {
-      // If the email is missing, return an error
-      return new NextResponse(
-        JSON.stringify({ success: false, error: 'User email is required' }),
+      return NextResponse.json(
+        { success: false, error: 'Email utilisateur requis' },
         { status: 400 }
       );
     }
@@ -39,14 +38,14 @@ export async function GET(request) {
       video2Status: user.video2 ? 'Regarde' : 'Non Regarde',
     };
 
-    return new NextResponse(
-      JSON.stringify({ success: true, videoStatus }), // Return the status as JSON
+    return NextResponse.json(
+      { success: true, videoStatus },
       { status: 200 }
     );
   } catch (error) {
     console.error('Error fetching video status:', error);
-    return new NextResponse(
-      JSON.stringify({ success: false, error: 'Internal server error' }),
+    return NextResponse.json(
+      { success: false, error: 'Internal Server Error' },
       { status: 500 }
     );
   }
@@ -59,9 +58,8 @@ export async function PATCH(request) {
     const { email, video1, video2 } = await request.json();
 
     if (!email) {
-      // If the email is missing, return an error
-      return new NextResponse(
-        JSON.stringify({ success: false, error: 'User email is required' }),
+      return NextResponse.json(
+        { success: false, error: 'User Email is required' },
         { status: 400 }
       );
     }
@@ -76,14 +74,14 @@ export async function PATCH(request) {
     });
 
     // Return a success message if the update was successful
-    return new NextResponse(
-      JSON.stringify({ success: true, message: 'Video status updated successfully' }),
+    return NextResponse.json(
+      { success: true, message: 'Video Status Updated Successfuly' },
       { status: 200 }
     );
   } catch (error) {
     console.error('Error updating video status:', error);
-    return new NextResponse(
-      JSON.stringify({ success: false, error: 'Internal server error' }),
+    return NextResponse.json(
+      { success: false, error: 'Internal Server Error' },
       { status: 500 }
     );
   }

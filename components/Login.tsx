@@ -37,22 +37,48 @@ export default function Login() {
       redirect: false,
       email: values.email,
       password: values.password,
+      callbackUrl: '/dashboard'
     });
 
-    if (signInData?.error) {
+    if (!signInData) {
+      throw new Error('Aucune réponse du serveur');
+    }
+
+    if (signInData.error) {
+      let errorMessage = 'Email ou mot de passe incorrect';
+      if (signInData.error.includes('CredentialsSignin')) {
+        errorMessage = 'Authentification échouée';
+      } else if (signInData.error.includes('UserNotFound')) {
+        errorMessage = 'Aucun compte associé à cet email';
+      }
       toast({
-        title: 'Error',
-        description: 'Email ou Mots de passe incorrect',
+        title: 'Erreur',
+        description: errorMessage,
         variant: 'destructive',
       });
-    } else if (signInData?.ok) {
-      router.refresh();
-      router.push('/dashboard');
+    } else if (signInData.ok) {
+      const callbackUrl = signInData.url || '/dashboard';
+      if (callbackUrl.startsWith('/')) {
+        router.push(callbackUrl);
+      } else {
+        router.push('/dashboard');
+      }
     }
+  } catch (error) {
+    console.error('Login error:', error);
+    const errorMessage = error instanceof Error 
+      ? error.message 
+      : 'Une erreur inattendue est survenue';
+    
+    toast({
+      title: 'Erreur',
+      description: errorMessage,
+      variant: 'destructive',
+    });
   } finally {
     setIsLoading(false);
   }
-  };
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#67a5f0] via-[#a0c5f5] to-[#135ced] p-4">

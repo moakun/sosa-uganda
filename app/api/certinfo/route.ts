@@ -1,25 +1,44 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
+import * as z from 'zod';
+
+const postSchema = z.object({
+  email: z.string().email("Email invalide")
+});
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const email = searchParams.get('email');
 
   if (!email) {
-    return NextResponse.json({ error: 'Email is required' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'Email is required' }, 
+      { status: 400 });
   }
 
   try {
     const user = await db.user.findUnique({
       where: { email },
-      select: { gotAttestation: true },
+      select: { 
+        gotAttestation: true,
+        fullName: true,
+        companyName: true 
+       },
     });
 
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return NextResponse.json({ 
+        error: 'User not found' }, 
+        { status: 404 });
     }
 
-    return NextResponse.json({ gotAttestation: user.gotAttestation });
+    return NextResponse.json({ 
+      gotAttestation: user.gotAttestation,
+      userDetails: {
+        name: user.fullName,
+        company: user.companyName
+      }
+     });
   } catch (error) {
     console.error('Error fetching attestation status:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
@@ -28,30 +47,50 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const { email } = await req.json();
+    const body = await req.json();
+    const { email } = postSchema.parse(body);
 
-    if (!email) {
-      return NextResponse.json({ error: 'Email is required' }, { status: 400 });
-    }
-
-    const user = await db.user.findUnique({
+    const existingUser = await db.user.findUnique({
       where: { email },
-      select: { gotAttestation: true },
+      select: { id: true }
     });
 
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    if (!existingUser) {
+      return NextResponse.json(
+        { error: 'Utilisateur non trouvé' },
+        { status: 404 }
+      );
     }
 
-    await db.user.update({
+    const updatedUser = await db.user.update({
       where: { email },
-      data: { gotAttestation: true },
+      data: { 
+        gotAttestation: true,
+      },
+      select: {
+        gotAttestation: true,
+        date: true
+      }
     });
 
-    return NextResponse.json({ gotAttestation: true });
+    return NextResponse.json({
+      success: true,
+      gotAttestation: updatedUser.gotAttestation,
+      attestationDate: updatedUser.date
+    });
   } catch (error) {
-    console.error('Error updating attestation status:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('[ATTESTATION_POST] Error:', error);
+    
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: error.errors.map(e => e.message).join(', ') },
+        { status: 400 }
+      );
+    }
+    
+    return NextResponse.json(
+      { error: 'Erreur du serveur' },
+      { status: 500 }
+    );
   }
 }
-

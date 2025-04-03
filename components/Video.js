@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react"; // Import useSession hook for session management
 import { useRouter } from "next/navigation"; // For redirecting if needed
+import { toast } from "@/hooks/use-toast";
 
 export default function VideoPage() {
   const videos = [
@@ -20,130 +21,144 @@ export default function VideoPage() {
 
   const { data: session, status } = useSession();
   const [currentVideo, setCurrentVideo] = useState(null);
-  const [videoStates, setVideoStates] = useState({ video1: false, video2: false });
+  const [videoStates, setVideoStates] = useState({ 
+    video1: { watched: false, loading: false },
+    video2: { watched: false, loading: false }
+  });
   const router = useRouter();
 
+  // Fetch initial video states
   useEffect(() => {
-    if (status === "loading") return; // Don't fetch until session is loaded
-    if (!session || !session.user?.email) {
-      router.push("/login"); // Redirect to login page if not logged in
-    } else {
-      const fetchVideoStatus = async () => {
-        try {
-          const email = session.user.email; // Use email from session
-
-          if (!email) {
-            throw new Error("User email is missing");
-          }
-
-          const response = await fetch(`/api/video?email=${email}`); // Fetch video status from API
-
-          if (!response.ok) {
-            throw new Error("Failed to fetch video status");
-          }
-
-          const data = await response.json();
-
-          if (data.success) {
-            setVideoStates({
-              video1: data.videoStatus.video1Status === "Seen",
-              video2: data.videoStatus.video2Status === "Seen",
-            });
-          } else {
-            console.error("Error fetching video status:", data.error);
-          }
-        } catch (error) {
-          console.error("Error fetching video status:", error);
+    if (status === "loading" || !session?.user?.email) return;
+    
+    const fetchVideoStatus = async () => {
+      try {
+        const response = await fetch(
+          `/api/video?email=${encodeURIComponent(session.user.email)}`
+        );
+        
+        if (!response.ok) throw new Error("Failed to fetch video status");
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          setVideoStates({
+            video1: { watched: data.videoStatus.video1Status === "Regarde", loading: false },
+            video2: { watched: data.videoStatus.video2Status === "Regarde", loading: false }
+          });
         }
-      };
+      } catch (error) {
+        console.error("Error fetching video status:", error);
+        toast({
+          title: "Error",
+          description: "Could not load video status",
+          variant: "destructive",
+        });
+      }
+    };
 
-      fetchVideoStatus();
-    }
-  }, [session, status, router]);
+    fetchVideoStatus();
+  }, [session, status]);
 
   const handleWatchNow = async (videoId) => {
-    if (!session?.user?.email) return; // Ensure the user is logged in before updating
-
+    if (!session?.user?.email) return;
+    
+    const videoKey = `video${videoId}`;
+    
+    // Start playing the video immediately
+    setCurrentVideo(videoId);
+    
+    // If already watched, we don't need to update the status again
+    if (videoStates[videoKey].watched) return;
+    
+    // Prevent multiple clicks while processing
+    if (videoStates[videoKey].loading) return;
+    
     try {
-      // Update the video state for the selected video
-      const videoKey = videoId === 1 ? "video1" : "video2";
-      setVideoStates((prev) => ({ ...prev, [videoKey]: true }));
-
-      // Set the current video to display
-      setCurrentVideo(videoId);
-
-      // Send the video state update to the backend API
+      // Set loading state
+      setVideoStates(prev => ({
+        ...prev,
+        [videoKey]: { ...prev[videoKey], loading: true }
+      }));
+      
+      // Mark as watched in database
       const response = await fetch("/api/video", {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: session.user.email, // Send email instead of id
-          [videoKey]: true, // Set the video to watched
+          email: session.user.email,
+          [videoKey]: true
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to update video status");
-      }
-
-      const data = await response.json();
-
-      if (data.success) {
-        console.log("Video status updated successfully");
-      } else {
-        console.error("Error updating video status:", data.error);
-      }
+      if (!response.ok) throw new Error("Failed to update video status");
+      
+      // Update local state only after successful API call
+      setVideoStates(prev => ({
+        ...prev,
+        [videoKey]: { watched: true, loading: false }
+      }));
+      
     } catch (error) {
-      console.error("Error handling video watch:", error);
+      console.error("Error updating video status:", error);
+      toast({
+        title: "Error",
+        description: "Could not mark video as watched",
+        variant: "destructive",
+      });
+      
+      // Reset loading state on error
+      setVideoStates(prev => ({
+        ...prev,
+        [videoKey]: { ...prev[videoKey], loading: false }
+      }));
     }
   };
 
-  // Check if both videos are marked as seen
-  const allVideosWatched = videoStates.video1 && videoStates.video2;
-
-  // Handle redirection to the dashboard when the button is clicked
-  const handleBackToDashboard = () => {
-    router.push("/dashboard");
-  };
+  const allVideosWatched = videoStates.video1.watched && videoStates.video2.watched;
 
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-6">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-black-600 mb-6">Course videos</h1>
-        <p className="text-black-500 mb-8">Choose a video to watch.</p>
+        <h1 className="text-4xl font-bold text-black-600 mb-6">Course Videos</h1>
+        <p className="text-black-500 mb-8">Choose a video to watch</p>
 
         <div className="space-y-6">
-          {videos.map((video) => (
-            <div
-              key={video.id}
-              className="p-6 rounded-lg shadow-lg bg-white-500 text-black-600 flex items-center justify-between"
-            >
-              <div className="ml-4">
-                <h2 className="text-lg font-semibold">{video.title}</h2>
-                <p>
-                  {video.id === 1 && videoStates.video1 ? "Seen" : null}
-                  {video.id === 2 && videoStates.video2 ? "Seen" : null}
-                </p>
-              </div>
-              <button
-                onClick={() => handleWatchNow(video.id)}
-                className="px-4 py-2 bg-blue-500 text-white-500 rounded-lg shadow hover:bg-blue-100 hover:text-blue-500 transition-all"
+          {videos.map((video) => {
+            const videoKey = `video${video.id}`;
+            const { watched, loading } = videoStates[videoKey];
+            
+            return (
+              <div
+                key={video.id}
+                className="p-6 rounded-lg shadow-lg bg-white-500 text-black-600 flex items-center justify-between"
               >
-                Watch now
-              </button>
-            </div>
-          ))}
+                <div className="ml-4">
+                  <h2 className="text-lg font-semibold">{video.title}</h2>
+                  {watched && <p className="text-green-500 font-medium">Already Seen</p>}
+                </div>
+                <button
+                  onClick={() => handleWatchNow(video.id)}
+                  className={`px-4 py-2 rounded-lg shadow transition-all ${
+                    loading
+                      ? "bg-blue-300 text-black cursor-wait"
+                      : "bg-blue-500 text-white-500 hover:bg-blue-600"
+                  }`}
+                >
+                  {loading ? "Registering..." : "Watch Now"}
+                </button>
+              </div>
+            );
+          })}
         </div>
 
-        {/* Section du lecteur vidéo */}
         {currentVideo && (
           <div className="mt-8 bg-white-500 shadow-lg rounded-lg p-6">
             <h2 className="text-2xl font-semibold text-black-600 mb-4">Now playing</h2>
             <div className="flex justify-center">
               <video
                 controls
+                autoPlay
                 className="w-full max-w-3xl rounded-lg shadow-md"
                 src={videos.find((v) => v.id === currentVideo)?.url}
               />
@@ -151,14 +166,13 @@ export default function VideoPage() {
           </div>
         )}
 
-        {/* Display the "Back to Dashboard" button if both videos are watched */}
         {allVideosWatched && (
           <div className="mt-8 text-center">
             <button
-              onClick={handleBackToDashboard}
-              className="px-6 py-3 bg-blue-500 text-white-500 font-semibold rounded-lg shadow-lg hover:bg-green-600 transition-all"
+              onClick={() => router.push("/dashboard")}
+              className="px-6 py-3 bg-blue-500 text-white-500 font-semibold rounded-lg shadow-lg hover:bg-blue-600 transition-all"
             >
-              Return to dashboard
+              Return to the dashboard
             </button>
           </div>
         )}

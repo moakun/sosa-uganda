@@ -25,10 +25,6 @@ export default function Attestation() {
         logging: false,
         useCORS: true,
         backgroundColor: "#ffffff",
-        x: 0,
-        y: 0,
-        scrollX: 0,
-        scrollY: 0,
       });
 
       // Convert canvas to PDF using jsPDF
@@ -38,12 +34,8 @@ export default function Attestation() {
       const imgHeight = (canvas.height * imgWidth) / canvas.width; // Keep aspect ratio
       const scaledHeight = imgHeight > 210 ? 210 : imgHeight; // Scale if image is too large  
 
-      // Center the image in the PDF
-      const xOffset = (297 - imgWidth) / 2;
-      const yOffset = (210 - scaledHeight) / 2;
-
-      pdf.addImage(imgData, "PNG", xOffset, yOffset, imgWidth, scaledHeight);
-      pdf.save("certificate.pdf");
+      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, scaledHeight);
+      pdf.save("certificat.pdf");
 
 
       // Update attestation status in the database
@@ -54,11 +46,9 @@ export default function Attestation() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to update attestation status");
+        throw new Error("Failed to update attestation status");
       }
 
-      console.log("Attestation status updated successfully");
     } catch (error) {
       console.error("Error:", error);
     } finally {

@@ -1,12 +1,14 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { useToast } from "@/hooks/use-toast"
 import { useSession } from "next-auth/react"
 import questions from './questions'
+import sosa from "../public/assets/sosal.png"
+import Image from "next/image"
 import Results from './Results'
 
 const Quiz: React.FC = () => {
@@ -17,17 +19,11 @@ const Quiz: React.FC = () => {
   const { toast } = useToast()
   const { data: session } = useSession()
 
-  useEffect(() => {
-    if (session?.user?.email) {
-      fetchUserScore(session.user.email)
-    }
-  }, [session])
-
-  const fetchUserScore = async (email: string) => {
+  const fetchUserScore = useCallback(async (email: string) => {
     try {
-      const response = await fetch(`/api/score?email=${encodeURIComponent(email)}`);
+      const response = await fetch(`/api/score?email=${encodeURIComponent(email)}`)
       if (!response.ok) {
-        throw new Error('Failed to fetch user score');
+        throw new Error('Failed to fetch user score')
       }
   
       const data = await response.json();
@@ -35,7 +31,7 @@ const Quiz: React.FC = () => {
       if (data.success) {
         // If there's a valid score
         if (data.userData?.score !== null) {
-          const score = data.userData.score;
+          const score = Math.min(data.userData.score, questions.length)
   
           if (score >= 7) {
             // If score is 8 or above, show it
@@ -78,23 +74,35 @@ const Quiz: React.FC = () => {
         variant: "default",
       });
     }
-  };
+  } , [toast])
   
-  
-  
-  
+  useEffect(() => {
+    if (session?.user?.email) {
+      fetchUserScore(session.user.email)
+    }
+  }, [session, fetchUserScore])
 
   const handleAnswerOptionClick = (answerIndex: number) => {
     const newUserAnswers = [...userAnswers]
+    const previousAnswer = newUserAnswers[currentQuestion]
+    
     newUserAnswers[currentQuestion] = answerIndex
     setUserAnswers(newUserAnswers)
 
     const isCorrect = questions[currentQuestion].answerOptions[answerIndex].isCorrect
-    if (isCorrect) {
-      setScore((prevScore) => prevScore + 1) // Increment score directly
-    }
+    const wasCorrect = previousAnswer !== null && 
+                      questions[currentQuestion].answerOptions[previousAnswer].isCorrect
+                      
+    setScore((prevScore) => {
+      if (isCorrect && !wasCorrect) {
+        return prevScore + 1
+      } else if (!isCorrect && wasCorrect) {
+        return prevScore - 1
+      }
+      return prevScore
+    })
   }
-
+                      
   const handlePrevious = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1)
@@ -114,6 +122,8 @@ const Quiz: React.FC = () => {
     if (!session?.user?.email) return
 
     try {
+      const finalScore = Math.min(score, questions.length)
+
       const response = await fetch('/api/score', {
         method: 'POST',
         headers: {
@@ -121,7 +131,7 @@ const Quiz: React.FC = () => {
         },
         body: JSON.stringify({
           email: session.user.email,
-          score, // Send raw score without formatting
+          score: finalScore // Send raw score without formatting
         }),
       })
 
@@ -153,62 +163,69 @@ const Quiz: React.FC = () => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-    <Card className="w-full max-w-7xl bg-white-500 shadow-lg">
-      <CardHeader>
-        <CardTitle>Quiz about Ethic and Anti Corruption</CardTitle>
-      </CardHeader>
-      <CardContent>
-        {showScore ? (
-          <Results score={score} totalQuestions={questions.length} onRestart={restartQuiz} />
-        ) : (
-          <>
-            <Progress value={(currentQuestion + 1) / questions.length * 100} className="mb-4 bg-gray-200" />
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2">
-                Question {currentQuestion + 1}/{questions.length}
-              </h2>
-              <p className="text-lg">{questions[currentQuestion].question}</p>
-            </div>
-            <div className="space-y-2">
-              {questions[currentQuestion].answerOptions.map((answerOption, index) => (
-                <Button
-                  key={index}
-                  onClick={() => handleAnswerOptionClick(index)}
-                  variant={userAnswers[currentQuestion] === index ? "default" : "outline"}
-                  className={`w-full justify-start h-auto py-3 px-4 text-left 
-                    whitespace-normal min-h-[80px] break-words ${
-                    userAnswers[currentQuestion] === index
-                      ? 'bg-blue-500 text-white-500 hover:bg-blue-600'
-                      : 'bg-white-500 text-black-500 hover:bg-blue-100'
-                  }`}
-                >
-                  {answerOption.answer}
-                </Button>
-              ))}
-            </div>
-          </>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white-500 p-4">
+      <div className="flex justify-center gap-8 mb-8 w-full max-w-7xl">
+        <Image src={sosa} alt="Logo" width={150} height={60} />
+      </div>
+
+      <Card className="w-full max-w-7xl bg-white shadow-lg">
+        <CardHeader>
+          <CardTitle className="text-center">
+            Quiz on Ethics and the Fight Against Corruption
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {showScore ? (
+            <Results score={Math.min(score, questions.length)} totalQuestions={questions.length} onRestart={restartQuiz} />
+          ) : (
+            <>
+              <Progress value={(currentQuestion + 1) / questions.length * 100} className="mb-4 bg-gray-200" />
+              <div className="mb-6">
+                <h2 className="text-2xl font-bold mb-2">
+                  Question {currentQuestion + 1}/{questions.length}
+                </h2>
+                <p className="text-lg">{questions[currentQuestion].question}</p>
+              </div>
+              <div className="space-y-2">
+                {questions[currentQuestion].answerOptions.map((answerOption, index) => (
+                  <Button
+                    key={index}
+                    onClick={() => handleAnswerOptionClick(index)}
+                    variant={userAnswers[currentQuestion] === index ? "default" : "outline"}
+                    className={`w-full justify-start h-auto py-3 px-4 text-left 
+                      whitespace-normal min-h-[80px] break-words ${
+                        userAnswers[currentQuestion] === index
+                          ? 'bg-blue-500 text-white-500 hover:bg-blue-600'
+                          : 'bg-white text-black hover:bg-blue-100'
+                      }`}
+                  >
+                    {answerOption.answer}
+                  </Button>
+                ))}
+              </div>
+            </>
+          )}
+        </CardContent>
+        {!showScore && (
+          <CardFooter className="flex justify-between">
+            <Button
+              onClick={handlePrevious}
+              disabled={currentQuestion === 0}
+              variant="outline"
+              className="bg-white text-black hover:bg-blue-100"
+            >
+              Previous
+            </Button>
+            <Button 
+              onClick={handleNext}
+              className="bg-blue-500 text-white-500 hover:bg-blue-600"
+              disabled={userAnswers[currentQuestion] === null}
+            >
+              {currentQuestion === questions.length - 1 ? 'Finished' : 'Next'}
+            </Button>
+          </CardFooter>
         )}
-      </CardContent>
-      {!showScore && (
-        <CardFooter className="flex justify-between">
-          <Button
-            onClick={handlePrevious}
-            disabled={currentQuestion === 0}
-            variant="outline"
-            className="bg-white-500 text-black-500 hover:bg-blue-100"
-          >
-            Back
-          </Button>
-          <Button 
-            onClick={handleNext}
-            className="bg-blue-500 text-white-500 hover:bg-blue-600"
-          >
-            {currentQuestion === questions.length - 1 ? 'Finished' : 'Next'}
-          </Button>
-        </CardFooter>
-      )}
-    </Card>
+      </Card>
     </div>
   )
 }

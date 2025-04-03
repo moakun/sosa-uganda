@@ -10,7 +10,7 @@ export default function Dashboard() {
   const [progress, setProgress] = useState({
     videosCompleted: 0,
     quizPassed: false,
-    questionnaireCompleted: 0,
+    questionnaireCompleted: false,
     attestationDownloaded: false,
   });
 
@@ -36,7 +36,6 @@ export default function Dashboard() {
         }
     
         const data = await response.json();
-        console.log('Attestation Data:', data); // Debugging line
     
         if (data.gotAttestation !== undefined) {
           setGotAttestation(data.gotAttestation);
@@ -55,7 +54,6 @@ export default function Dashboard() {
         }
     
         const data = await response.json();
-        console.log('Video Data:', data); // Debugging line
     
         if (data.success) {
           const videosCompleted =
@@ -66,9 +64,7 @@ export default function Dashboard() {
             ...prev,
             videosCompleted,
           }));
-        } else {
-          console.error('Error fetching video data:', data.error);
-        }
+        } 
       } catch (error) {
         console.error('Error fetching video status:', error.message);
       }
@@ -92,10 +88,8 @@ export default function Dashboard() {
     
           setProgress((prev) => ({
             ...prev,
-            questionnaireCompleted: questionnaireCompleted ? 1 : 0,
+            questionnaireCompleted,
           }));
-        } else {
-          console.error('echec du fetch  de la data du questionnaire:', data.error);
         }
       } catch (error) {
         console.error('echec du fetch du status du questionnaire:', error);
@@ -110,7 +104,6 @@ export default function Dashboard() {
         }
     
         const data = await response.json();
-        console.log('Quiz Data:', data); // Debugging line
     
         if (data.success) {
           if (data.userData.score !== null) {
@@ -119,15 +112,8 @@ export default function Dashboard() {
               ...prev,
               quizPassed,
             }));
-          } else {
-            setProgress((prev) => ({
-              ...prev,
-              quizPassed: false,
-            }));
-          }
-        } else {
-          console.log('Erreur en cherchant la data du quiz:', data.error);
-        }
+          } 
+        } 
       } catch (error) {
         console.log('Erreur en cherchant la data du quiz:', error);
       }
@@ -145,7 +131,7 @@ export default function Dashboard() {
     const completedSteps = [
       progress.videosCompleted === 2, // Videos
       progress.quizPassed,           // Quiz
-      progress.questionnaireCompleted === 1, // Questionnaire
+      progress.questionnaireCompleted, // Questionnaire
       gotAttestation,               // Attestation
     ].filter(Boolean).length;
 
@@ -186,7 +172,6 @@ export default function Dashboard() {
   );
 
   const overallProgress = calculateOverallProgress();
-
   const isDownloadButtonVisible = progress.videosCompleted === 2 && progress.quizPassed && progress.questionnaireCompleted;
 
 
