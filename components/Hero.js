@@ -49,6 +49,12 @@ const Hero = ({
               <Link href="/register">
               <ButtonPrimary>Start!</ButtonPrimary>
               </Link>
+              <p className="text-sm text-black mt-4">
+              If you have any problems, please send an email to: <a href="mailto:developedbymoe@gmail.com" className="text-blue-500 underline">developedbymoe@gmail.com</a>
+              </p>
+              <p className="text-sm text-black mt-4">
+              After receiving your certificate, please send it to the following email address: <a href="mailto:developedbymoe@gmail.com" className="text-blue-500 underline">developedbymoe@gmail.com</a>
+              </p>
             </div>
             <div className="flex w-full">
               <motion.div className="h-full w-full" variants={scrollAnimation}>
