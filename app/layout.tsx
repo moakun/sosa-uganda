@@ -1,14 +1,20 @@
 import type { Metadata } from "next";
+import { Poppins } from "next/font/google";
 import "./globals.css";
-//import "./slick.css";
 import "./tailwind.css";
-import Provider from '@/components/Provider';
-import { Toaster } from '@/components/ui/toaster';
+import Provider from "@/components/Provider";
+import { Toaster } from "@/components/ui/toaster";
 
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Anti-Corruption",
   description: "E-learning anti corruption",
+  icons: { icon: "/assets/sosal.png" },
 };
 
 export default function RootLayout({
@@ -18,17 +24,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-      <link rel="icon" href="/assets/sosal.png" type="image/png" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="font-sans">
+      <body className={poppins.className}>
         <Provider>
-        {children}
-        <Toaster/>
+          {children}
+          <Toaster />
         </Provider>
       </body>
     </html>

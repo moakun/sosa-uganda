@@ -5,24 +5,22 @@ export async function POST(req: Request) {
   try {
     const data = await req.json();
 
-    if (!data || !data.email || data.score === undefined) {
+    if (!data?.email || data.score === undefined) {
       return NextResponse.json(
-        { message: 'Invalid input data or missing email/score' }, 
+        { message: 'Invalid input data or missing email/score' },
         { status: 400 }
       );
     }
 
     const validatedScore = Math.max(0, data.score);
 
-    const updatedUser = await db.user.update({
+    await db.user.update({
       where: { email: data.email },
-      data: {
-        score: validatedScore
-      },
+      data: { score: validatedScore },
     });
 
     return NextResponse.json(
-      { message: 'Score updated successfully', updatedUser },
+      { success: true, message: 'Score updated successfully' },
       { status: 200 }
     );
   } catch (error) {
@@ -48,9 +46,7 @@ export async function GET(req: Request) {
 
     const userData = await db.user.findUnique({
       where: { email },
-      select: {
-        score: true,
-      },
+      select: { score: true },
     });
 
     if (!userData) {
@@ -60,28 +56,11 @@ export async function GET(req: Request) {
       );
     }
 
-    const validatedScore = userData.score !== null ? Math.max(0, userData.score) : null;
+    const score = userData.score !== null ? Math.max(0, userData.score) : null;
 
-    if (validatedScore === null) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          message: 'No previous exam score found. First exam attempt.' 
-        },
-        { status: 200 }
-      );
-    } else if (validatedScore < 7) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          message: 'Score is not sufficient (must be greater than 7).' 
-        },
-        { status: 200 }
-      );
-    }
-
+    // Always return success:true — score:null simply means first attempt
     return NextResponse.json(
-      { success: true, userData: { score: validatedScore } },
+      { success: true, userData: { score } },
       { status: 200 }
     );
   } catch (error) {

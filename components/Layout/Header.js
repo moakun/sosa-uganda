@@ -1,22 +1,22 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useSession, signOut } from "next-auth/react"; // Import hooks from next-auth
+import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { Link as LinkScroll } from "react-scroll";
-import ButtonOutline from "../misc/ButtonOutline.";
+import ButtonOutline from "../misc/ButtonOutline";
 import Image from "next/image";
 import Logo from "../../public/assets/sosal.png";
 
 const Header = () => {
-  const { data: session } = useSession(); // Get session data
+  const { data: session } = useSession();
   const [activeLink, setActiveLink] = useState(null);
   const [scrollActive, setScrollActive] = useState(false);
 
   useEffect(() => {
-    window.addEventListener("scroll", () => {
-      setScrollActive(window.scrollY > 20);
-    });
+    const handleScroll = () => setScrollActive(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll); // Fix: cleanup prevents memory leak
   }, []);
 
   return (
@@ -29,7 +29,14 @@ const Header = () => {
       >
         <nav className="max-w-screen-xl px-6 sm:px-8 lg:px-16 mx-auto grid grid-flow-col py-3 sm:py-4">
           <div className="col-start-1 col-end-2 flex items-center">
-            <Image src={Logo} alt="Logo" width={80} height={60} />
+            <Image
+              src={Logo}
+              alt="Logo"
+              width='auto'
+              height='auto'
+              style={{ width: "80px", height: "auto" }}
+              priority
+            />
           </div>
           <ul className="hidden lg:flex col-start-4 col-end-8 text-black-500 items-center">
             <LinkScroll
@@ -67,7 +74,6 @@ const Header = () => {
           </ul>
           <div className="col-start-10 col-end-12 font-medium flex justify-end items-center">
             {session ? (
-              // Show Dashboard and Logout buttons if user is logged in
               <>
                 <Link
                   href="/dashboard"
@@ -75,12 +81,14 @@ const Header = () => {
                 >
                   Control Panel
                 </Link>
-
-                  <button onClick={() => signOut()} className="font-medium tracking-wide py-2 px-5 sm:px-8 border border-orange-500 text-orange-500 bg-white-500 outline-none rounded-l-full rounded-r-full capitalize hover:bg-orange-500 hover:text-white-500 transition-all hover:shadow-orange ">Disconnect</button>
-                
+                <button
+                  onClick={() => signOut()}
+                  className="font-medium tracking-wide py-2 px-5 sm:px-8 border border-orange-500 text-orange-500 bg-white-500 outline-none rounded-l-full rounded-r-full capitalize hover:bg-orange-500 hover:text-white-500 transition-all hover:shadow-orange"
+                >
+                  Disconnect
+                </button>
               </>
             ) : (
-              // Show Login and Register buttons if user is not logged in
               <>
                 <Link
                   href="/login"

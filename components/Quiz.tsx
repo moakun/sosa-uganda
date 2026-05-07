@@ -11,71 +11,52 @@ import sosa from "../public/assets/sosal.png"
 import Image from "next/image"
 import Results from './Results'
 
+const PASSING_SCORE = 7
+
 const Quiz: React.FC = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [score, setScore] = useState<number>(0) // Default score is 0
+  const [score, setScore] = useState(0)
   const [showScore, setShowScore] = useState(false)
-  const [userAnswers, setUserAnswers] = useState<(number | null)[]>(new Array(questions.length).fill(null))
+  const [userAnswers, setUserAnswers] = useState<(number | null)[]>(
+    new Array(questions.length).fill(null)
+  )
   const { toast } = useToast()
   const { data: session } = useSession()
 
   const fetchUserScore = useCallback(async (email: string) => {
     try {
       const response = await fetch(`/api/score?email=${encodeURIComponent(email)}`)
-      if (!response.ok) {
-        throw new Error('Failed to fetch user score')
+      if (!response.ok) throw new Error('Failed to fetch user score')
+
+      const data = await response.json()
+
+      if (!data.success) return
+
+      const previousScore: number | null = data.userData?.score ?? null
+
+      if (previousScore === null) {
+        // First attempt — stay at 0, show no toast
+        return
       }
-  
-      const data = await response.json();
-  
-      if (data.success) {
-        // If there's a valid score
-        if (data.userData?.score !== null) {
-          const score = Math.min(data.userData.score, questions.length)
-  
-          if (score >= 7) {
-            // If score is 8 or above, show it
-            setScore(score);
-            setShowScore(true);
-          } else {
-            // If score is less than 8
-            setScore(score);
-            setShowScore(false);
-            toast({
-              title: "Inferior Score",
-              description: `Your score is ${score}, You must have the exam again.`,
-              variant: "default",
-            });
-          }
-        } else {
-          // If no score (first exam attempt)
-          setScore(0);
-          setShowScore(false);
-          toast({
-            title: "First Exam Attempt",
-            description: "Good luck with your exam!",
-            variant: "default",
-          });
-        }
+
+      if (previousScore >= PASSING_SCORE) {
+        // Already passed — show results directly, don't let them re-take
+        setScore(previousScore)
+        setShowScore(true)
       } else {
-        // Handle case when success is false
-        console.log(data.message || "Unknown error occurred");
+        // Failed before — reset score to 0 so the retry starts clean
+        setScore(0)
         toast({
-          title: "Message",
-          description: data.message || "Can't fetch user score",
+          title: "Previous attempt found",
+          description: `Your last score was ${previousScore}/${questions.length}. You need ${PASSING_SCORE} to pass. Try again!`,
           variant: "default",
-        });
+        })
       }
     } catch (error) {
-      console.error('Error fetching user score:', error);
-      toast({
-        title: "Message",
-        description: "Can't fetch user score",
-        variant: "default",
-      });
+      console.error('Error fetching user score:', error)
     }
-  } , [toast])
-  
+  }, [toast])
+
   useEffect(() => {
     if (session?.user?.email) {
       fetchUserScore(session.user.email)
@@ -85,28 +66,24 @@ const Quiz: React.FC = () => {
   const handleAnswerOptionClick = (answerIndex: number) => {
     const newUserAnswers = [...userAnswers]
     const previousAnswer = newUserAnswers[currentQuestion]
-    
+
     newUserAnswers[currentQuestion] = answerIndex
     setUserAnswers(newUserAnswers)
 
     const isCorrect = questions[currentQuestion].answerOptions[answerIndex].isCorrect
-    const wasCorrect = previousAnswer !== null && 
-                      questions[currentQuestion].answerOptions[previousAnswer].isCorrect
-                      
-    setScore((prevScore) => {
-      if (isCorrect && !wasCorrect) {
-        return prevScore + 1
-      } else if (!isCorrect && wasCorrect) {
-        return prevScore - 1
-      }
-      return prevScore
+    const wasCorrect =
+      previousAnswer !== null &&
+      questions[currentQuestion].answerOptions[previousAnswer].isCorrect
+
+    setScore((prev) => {
+      if (isCorrect && !wasCorrect) return prev + 1
+      if (!isCorrect && wasCorrect) return prev - 1
+      return prev
     })
   }
-                      
+
   const handlePrevious = () => {
-    if (currentQuestion > 0) {
-      setCurrentQuestion(currentQuestion - 1)
-    }
+    if (currentQuestion > 0) setCurrentQuestion(currentQuestion - 1)
   }
 
   const handleNext = () => {
@@ -126,21 +103,12 @@ const Quiz: React.FC = () => {
 
       const response = await fetch('/api/score', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: session.user.email,
-          score: finalScore // Send raw score without formatting
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: session.user.email, score: finalScore }),
       })
 
-      if (!response.ok) {
-        throw new Error('Failed to save score')
-      }
+      if (!response.ok) throw new Error('Failed to save score')
 
-      const data = await response.json()
-      console.log('Score saved:', data)
       toast({
         title: "Score Registered",
         description: "Your score has been saved successfully.",
@@ -148,8 +116,8 @@ const Quiz: React.FC = () => {
     } catch (error) {
       console.error('Error saving score:', error)
       toast({
-        title: "Erreur",
-        description: "Can't save your score",
+        title: "Error",
+        description: "Could not save your score.",
         variant: "destructive",
       })
     }
@@ -157,7 +125,7 @@ const Quiz: React.FC = () => {
 
   const restartQuiz = () => {
     setCurrentQuestion(0)
-    setScore(0) // Reset score to 0
+    setScore(0)
     setShowScore(false)
     setUserAnswers(new Array(questions.length).fill(null))
   }
@@ -176,10 +144,17 @@ const Quiz: React.FC = () => {
         </CardHeader>
         <CardContent>
           {showScore ? (
-            <Results score={Math.min(score, questions.length)} totalQuestions={questions.length} onRestart={restartQuiz} />
+            <Results
+              score={Math.min(score, questions.length)}
+              totalQuestions={questions.length}
+              onRestart={restartQuiz}
+            />
           ) : (
             <>
-              <Progress value={(currentQuestion + 1) / questions.length * 100} className="mb-4 bg-gray-200" />
+              <Progress
+                value={((currentQuestion + 1) / questions.length) * 100}
+                className="mb-4 bg-gray-200"
+              />
               <div className="mb-6">
                 <h2 className="text-2xl font-bold mb-2">
                   Question {currentQuestion + 1}/{questions.length}
@@ -192,7 +167,7 @@ const Quiz: React.FC = () => {
                     key={index}
                     onClick={() => handleAnswerOptionClick(index)}
                     variant={userAnswers[currentQuestion] === index ? "default" : "outline"}
-                    className={`w-full justify-start h-auto py-3 px-4 text-left 
+                    className={`w-full justify-start h-auto py-3 px-4 text-left
                       whitespace-normal min-h-[80px] break-words ${
                         userAnswers[currentQuestion] === index
                           ? 'bg-blue-500 text-white-500 hover:bg-blue-600'
@@ -216,12 +191,12 @@ const Quiz: React.FC = () => {
             >
               Previous
             </Button>
-            <Button 
+            <Button
               onClick={handleNext}
               className="bg-blue-500 text-white-500 hover:bg-blue-600"
               disabled={userAnswers[currentQuestion] === null}
             >
-              {currentQuestion === questions.length - 1 ? 'Finished' : 'Next'}
+              {currentQuestion === questions.length - 1 ? 'Finish' : 'Next'}
             </Button>
           </CardFooter>
         )}

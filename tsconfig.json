@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -11,7 +15,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     "plugins": [
       {
@@ -19,9 +23,27 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     }
   },
-  "include": ["types/**/*.d.ts","next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/Register.tsx", "app/login/page.js", "app/dashboard/page.js", "app/quiz/page.js", "app/register/page.js", "app/video/page.js", "components/Dashboard.js"],
-  "exclude": ["node_modules"]
+  "include": [
+    "types/**/*.d.ts",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "components/Register.tsx",
+    "app/login/page.js",
+    "app/dashboard/page.js",
+    "app/quiz/page.js",
+    "app/register/page.js",
+    "app/video/page.js",
+    "components/Dashboard.js",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
